@@ -62,11 +62,10 @@ async function getBibleVerse(book, chapter, verse) {
 }
 //Display a verse
 function displayVerse(verse) {
-	let text = verse
-	text = text.split(" ")
-	const arrayOfTrs = createTrs(text.length)
+	verse = verse.split(" ")
+	const arrayOfTrs = createTrs(verse.length)
 	let i = 0, j = 0
-	text.forEach(word => {
+	verse.forEach(word => {
 		const h2 = document.createElement("h2")
 		h2.style.fontSize = `${(Math.floor(Math.random() * 100 + 20) / 30)}em`
 		const randomColor = Math.floor(Math.random() * 16777215).toString(16)
