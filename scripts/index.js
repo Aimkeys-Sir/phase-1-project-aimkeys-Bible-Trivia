@@ -2,7 +2,8 @@
 const main = document.getElementById("clues")
 const form = document.querySelector(".form")
 const input = document.getElementById("verse-field")
-const scores=document.getElementById("scores")
+const scores = document.getElementById("scores")
+const answer=document.getElementById("answer")
 //Fetch
 const baseURL = 'https://ajith-holy-bible.p.rapidapi.com/'
 const endPoints = ['GetVerseOfaChapter', 'GetVerses', 'GetChapter', 'GetBooks']
@@ -13,21 +14,27 @@ const options = {
 		'X-RapidAPI-Host': 'ajith-holy-bible.p.rapidapi.com'
 	}
 };
-const reference = ["philippians", 1, 29]
-getBibleVerse(...reference).then(text => {
-	displayVerse(text)
-	timeId = displayTimer()
-	form.addEventListener('submit', e => {
-		e.preventDefault()
-		clearInterval(timeId)
-		scores.innerText=scoreManager(reference,input.value) + " points"
-	})
-})
+const chapters = [
+	50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22,
+	25, 29, 36, 10, 13, 10, 42, 150, 31, 12,
+	8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4, 7, 3, 3, 3, 2, 14, 4,
+	28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4, 4, 5, 3, 6, 4,
+	3, 1, 13, 5, 5, 3, 5, 1, 1, 1, 22
+]
 
-getBooks().then(array => {
-	autoComplete(input, array)
-})
-
+async function getChapter(book, chapterNum) {
+	const url = `${baseURL}${endPoints[2]}?chapter=${chapterNum}&Book=${book}`
+	const chapter = await fetch(url, options)
+		.then(response => response.json()).catch(err => console(`${err}, chapter not found`))
+	return [book, chapterNum, chapter]
+}
+function numberOfVerses(chapterString) {
+	chapterString = chapterString.split(" ")
+	for (let i = chapterString.length - 1; i > 0; i--) {
+		let num = parseInt(chapterString[i], 10)
+		if (num) return num
+	}
+}
 function scoreManager(reference, input) {
 	let score = 0
 	input = input.split(":")
@@ -88,7 +95,7 @@ async function getBibleVerse(book, chapter, verse) {
 			return verse.Output
 		})
 		.catch(err => console.error(err))
-	return text
+	return [[book, chapter, verse], text]
 }
 //Display a verse
 function displayVerse(verse) {
@@ -114,6 +121,7 @@ function displayVerse(verse) {
 
 }
 function createTrs(wordLength) {
+	main.innerHTML=""
 	const tdNum = Math.ceil(wordLength / 7)
 	let arrayOfTrs = []
 	let i = 0
@@ -137,16 +145,12 @@ function displayTimer() {
 	return timeId
 }
 //autocomplete
-function autoComplete(input, arrayOfBooks) {
-	let currentFocus = 0;
+function autoComplete(inputElement, arrayOfBooks) {
 	const autoCompleteDiv = document.querySelector(".autocomplete")
-	input.addEventListener("input", e => {
-		console.log(`${e.target} entered input`)
+	inputElement.addEventListener("input", e => {
 		const val = e.target.value
-
 		closeAllLists()
 		if (!val) return false
-		currentFocus = -1
 		const itemsDiv = document.createElement("div")
 		itemsDiv.id = "autocomplete-list"
 		itemsDiv.className = "autocomplete-items"
@@ -160,15 +164,14 @@ function autoComplete(input, arrayOfBooks) {
 				item.innerHTML += "<input type='hidden' class='hidden' value='" + book + "'>"
 
 				item.addEventListener('click', () => {
-					input.value = item.getElementsByClassName('hidden')[0].value + ":"
+					inputElement.value = item.getElementsByClassName('hidden')[0].value + ":"
 					closeAllLists()
 				})
 				itemsDiv.append(item)
 			}
 		})
-		console.log(itemsDiv)
 	})
-	input.addEventListener('keydown', e => {
+	inputElement.addEventListener('keydown', e => {
 		let items = document.getElementById("autocomplete-list")
 		if (items) items = items.getElementsByTagName("div")
 		if (e.keyCode == 13) {
@@ -178,7 +181,6 @@ function autoComplete(input, arrayOfBooks) {
 	})
 	function closeAllLists() {
 		const items = document.getElementsByClassName("autocomplete-items")
-		console.log(items)
 		for (let i = 0; i < items.length; i++) {
 			if (true) {
 				items[i].parentNode.removeChild(items[i])
@@ -189,4 +191,45 @@ function autoComplete(input, arrayOfBooks) {
 		closeAllLists()
 	})
 }
+
+////Callses
+//get a random verse and display 
+loadVerse()
+function loadVerse() {
+	getBooks().then(data => {
+		const bible = {}
+		for (let i = 0; i < data.length; i++) {
+			bible[data[i]] = chapters[i]
+		}
+		const randomBook = data[Math.floor(Math.random() * data.length)]
+		return ([randomBook, Math.ceil(Math.random() * bible[randomBook])])
+	})
+		.then(randomBC => {
+			getChapter(...randomBC)
+				.then(chapter => {
+					const verse = Math.ceil(Math.random() * numberOfVerses(chapter[2].Output))
+					return [chapter[0], chapter[1], verse]
+				})
+				.then(reference => {
+					getBibleVerse(...reference)
+						.then(refAndVerse => {
+							displayVerse(refAndVerse[1])
+							form.addEventListener('submit',formListener)
+							function formListener(e) {
+								e.preventDefault()
+								scores.innerText = scoreManager(refAndVerse[0], input.value)
+								form.removeEventListener("submit",formListener)
+								loadVerse()
+							}
+						})
+				})
+		})
+}
+
+//start autocomplete for the form
+getBooks().then(books => {
+	autoComplete(input, books)
+})
+
+
 
