@@ -3,7 +3,16 @@ const main = document.getElementById("clues")
 const form = document.querySelector(".form")
 const input = document.getElementById("verse-field")
 const scores = document.getElementById("scores")
-const answer=document.getElementById("answer")
+const answer1 = document.getElementById("answer1")
+const answer2 = document.getElementById("answer2")
+const answer3 = document.getElementById("answer3")
+const head1 = document.getElementById("book")
+const head2 = document.getElementById("chap")
+const head3 = document.getElementById("ver")
+const loadNext = document.getElementById("load-next")
+const count = document.querySelector(".count")
+const countDown = document.getElementById("count-down")
+const hey = document.querySelector(".hey")
 //Fetch
 const baseURL = 'https://ajith-holy-bible.p.rapidapi.com/'
 const endPoints = ['GetVerseOfaChapter', 'GetVerses', 'GetChapter', 'GetBooks']
@@ -13,7 +22,11 @@ const options = {
 		'X-RapidAPI-Key': '6720fd1680msh24bd9fc4828fef4p1799f1jsnd932a9177f39',
 		'X-RapidAPI-Host': 'ajith-holy-bible.p.rapidapi.com'
 	}
-};
+}
+const colors = ['5ebec4', 'f92c85', '2568fb', '1a2238', 'ff6a3d', '394f8a', '4056a1', '490b3d', 'bd1e51'
+	, 'f1b814', '00abe1', '161f6d', 'fb8122', '1d2228', 'e40c2b', '1d1d2c', '3cbcc3', '438945', 'eba63f', '000000',
+	'181818', 'e60576', '562264', 'facd3d', 'ef0d50', '0b4141', 'ff6864', '150734', '0f2557', 'fa255e', '9e15bf',
+	'3f6844', '01345b', '5ce0d8', 'ffcf43', '141824', 'ffb60', '0049ff',]
 const chapters = [
 	50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22,
 	25, 29, 36, 10, 13, 10, 42, 150, 31, 12,
@@ -37,20 +50,67 @@ function numberOfVerses(chapterString) {
 }
 function scoreManager(reference, input) {
 	let score = 0
+	let scoreMultiplier = Math.floor(parseInt(countDown.innerText, 10) / 3) + 1
 	input = input.split(":")
 	let boo = input[0].toUpperCase() == reference[0].toUpperCase()
 	let chap = input[1] == reference[1]
 	let ver = input[2] == reference[2]
+	const heyImage = document.createElement("img")
+		heyImage.className = "heyImage"
+	function createRightWrong(right) {
+		if (right) {
+			const right = document.createElement("img")
+			right.src = "./images/right.jpeg"
+			right.className = "right-wrong"
+			return right
+		}
+		else {
+			const wrong = document.createElement("img")
+			wrong.src = "./images/wrong.png"
+			wrong.className = "right-wrong"
+			return wrong
+		}
+	}
+
+
 	if (boo) {
-		score += 20
+		score += 20 * scoreMultiplier
+		head1.append(createRightWrong(true))
+	}
+	else {
+		head1.append(createRightWrong(false))
+	}
+	if (boo && !chap && !ver) {
+		heyImage.src = "./images/nada.png"
+
 	}
 	if (boo && chap) {
-		score += 80
+		score += 80 * scoreMultiplier
+		head2.append(createRightWrong(true))
+	}
+	else {
+		head2.append(createRightWrong(false))
+	}
+	if (boo && chap && !ver) {
+		heyImage.src = "./images/two.png"
 	}
 	if (boo && chap && ver) {
-		score += 150
+		score += 150 * scoreMultiplier
+		heyImage.src = "./images/wow.png"
+		head3.append(createRightWrong(true))
 	}
-	return score
+	else {
+		head3.append(createRightWrong(false))
+	}
+	if (!boo && !chap && !ver) {
+		heyImage.src = "./images/hmm.png"
+	}
+	hey.append(heyImage)
+	scoreText = scores.innerText.split(":")
+	scores.innerText = `Score: ${parseInt(scoreText[1], 10) + score}`
+	answer1.innerText = `${reference[0]} `
+	answer2.innerText = ` ${reference[1]}:`
+	answer3.innerText = `${reference[2]}`
 }
 
 async function getBooks() {
@@ -99,13 +159,15 @@ async function getBibleVerse(book, chapter, verse) {
 }
 //Display a verse
 function displayVerse(verse) {
+	const timeId = displayTimer()
 	verse = verse.split(" ")
 	const arrayOfTrs = createTrs(verse.length)
 	let i = 0, j = 0
 	verse.forEach(word => {
 		const h2 = document.createElement("h2")
 		h2.style.fontSize = `${(Math.floor(Math.random() * 100 + 20) / 30)}em`
-		const randomColor = Math.floor(Math.random() * 16777215).toString(16)
+		const randomColor = colors[Math.floor(Math.random() * colors.length)]
+		//Math.floor(Math.random() * 16777215).toString(16)
 		h2.style.color = "#" + randomColor
 		h2.className = "verse-h2"
 
@@ -118,10 +180,11 @@ function displayVerse(verse) {
 		h2.textContent = word + " "
 		arrayOfTrs[j].append(h2)
 	})
+	return timeId
 
 }
 function createTrs(wordLength) {
-	main.innerHTML=""
+	main.innerHTML = ""
 	const tdNum = Math.ceil(wordLength / 7)
 	let arrayOfTrs = []
 	let i = 0
@@ -135,7 +198,6 @@ function createTrs(wordLength) {
 	return arrayOfTrs
 }
 function displayTimer() {
-	const countDown = document.getElementById("countdown")
 	const timeId = setInterval(() => {
 		countDown.innerText = parseInt(countDown.innerText, 10) - 1
 		if (countDown.innerText == 0) {
@@ -213,13 +275,18 @@ function loadVerse() {
 				.then(reference => {
 					getBibleVerse(...reference)
 						.then(refAndVerse => {
-							displayVerse(refAndVerse[1])
-							form.addEventListener('submit',formListener)
+							input.focus()
+							const timeId = displayVerse(refAndVerse[1])
+							form.addEventListener('submit', formListener)
 							function formListener(e) {
 								e.preventDefault()
-								scores.innerText = scoreManager(refAndVerse[0], input.value)
-								form.removeEventListener("submit",formListener)
-								loadVerse()
+								clearInterval(timeId)
+								scoreManager(refAndVerse[0], input.value)
+								input.value = ""
+								loadNext.style.display = "block"
+								form.removeEventListener("submit", formListener)
+								form.style.display = "none"
+								main.style.marginTop = "40px"
 							}
 						})
 				})
@@ -230,6 +297,21 @@ function loadVerse() {
 getBooks().then(books => {
 	autoComplete(input, books)
 })
+//load the next verse
 
-
-
+loadNext.addEventListener("click", () => {
+	console.log("I am here")
+	loadVerse()
+	hey.innerHTML = ""
+	countDown.innerText = "60"
+	loadNext.style.display = "none"
+	answer1.innerText = ''
+	answer2.innerText = ''
+	answer3.innerText = ''
+	head1.innerText=''
+	head2.innerText=''
+	head3.innerText=''
+	form.style.display = "block"
+	main.style.marginTop = "0px"
+})
+ 

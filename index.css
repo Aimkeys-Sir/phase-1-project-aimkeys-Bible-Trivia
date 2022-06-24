@@ -1,91 +1,257 @@
-body{
-    background-color: #f4f2f3;
+body {
+  background-image: url("./images/b1.png");
+  justify-content: center;
 }
- 
-.logo{
-    height: 300px;
-    width: 300px;
-    position: absolute;
-    left: 0;
-    top: 0;
+
+.logo {
+  height: 300px;
+  width: 300px;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
-.verses{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    position: absolute;
-    left: 300px;
-    top:100px
-   
+
+.corner {
+  height: 300px;
+  width: 300px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
+
+@keyframes for-hey {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.5);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  75% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.hey {
+
+  position: absolute;
+  z-index: 1;
+  left: 30px;
+  bottom: 100px;
+}
+
+.heyImage {
+  height: 100px;
+  width: 100px;
+  animation-name: for-hey;
+  animation-duration: 5s;
+}
+
+.title {
+  position: absolute;
+  right: 20px;
+  /* top: 0; */
+
+}
+
+.center {
+  display: inline-block;
+  justify-content: center;
+  margin-left: 20em;
+}
+
+.right-wrong {
+  height: 20px;
+  width: 20px;
+}
+
+.answers {
+  display: flex;
+  float: left;
+  font-family: alegreya;
+  font-size: 1.5em;
+  justify-content: center;
+  margin-top: 1.5em;
+  margin-left: 5em;
+}
+
+.answers h2 {
+  justify-content: flex-start;
+}
+
+.answers-table {
+  border-collapse: collapse;
+  border-spacing: 0 0px;
+}
+.tr1{
+  padding-top: 0px;
+}
+
+.circle {
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  z-index: 1;
+  right: 40px;
+  top: 20px;
+  
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 60px;
+  background-color: #8b0000;
+  justify-content: center;
+  color: white;
+}
+
+.circle h1 {
+  margin-left: 0.8em;
+  margin-top: 0.4em;
+  font-size: 5em;
+  font-family: alegreya;
+
+}
+
+.scores {
+  position: absolute;
+  left: 70px;
+  bottom: 35px;
+  color: black;
+  font-family: alegreya;
+}
+
+.verses {
+  font-family: guerrilla;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
+}
+
 .row {
-    margin-top: 0em;
-    margin-bottom: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-  .verse-h2{
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 0.1em;
-  }
-  .count{
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  .form{
-    position:absolute;
-    bottom: 200px;;
-    left: 500px;
-  }
-  .autocomplete{
-    position: relative;
-    display: inline-block;
-  }
-  input {
-    border: 1px solid transparent;
-    background-color: #f1f1f1;
-    padding: 10px;
-    font-size: 16px;
-  }
-  input[type=text] {
-    background-color: #f1f1f1;
-    width: 100%;
-  }
-  input[type=submit] {
-    background-color: DodgerBlue;
-    margin-left: 20px;
-    color: #fff;
-  }
-  .autocomplete-items {
-    position: absolute;
-    border: 1px solid #d4d4d4;
-    border-bottom: none;
-    border-top: none;
-    z-index: 99;
-    /*position the autocomplete 
-    items to be the same width as 
-    the container:*/
-    top: 100%;
-    left: 0;
-    right: 0;
-  }
-  .autocomplete-items div {
-    padding: 10px;
-    cursor: pointer;
-    background-color: #fff;
-    border-bottom: 1px solid #d4d4d4;
-  }
-  .autocomplete-items div:hover {
-    /*when hovering an item:*/
-    background-color: #e9e9e9;
-  }
-  .autocomplete-active {
-    /*when navigating through the
-     items using the arrow keys:*/
-    background-color: DodgerBlue !important;
-    color: #ffffff;
-  }
+  margin-top: 0em;
+  margin-bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.verse-h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0.1em;
+}
+
+.count {
+  position: relative;
+  height: 100px;
+  width: 60%;
+  display: flex;
+  float: left;
+  top: 0;
+  left: 0;
+  justify-content: center;
+}
+
+.count h2 {
+  margin-left: 5px;
+}
+
+#load-next {
+  display: none;
+  position: absolute;
+  right: 300px;
+  top: 30px;
+  cursor: pointer;
+  background-color: #4056a1;
+  color: white;
+  font-family: alegreya;
+  margin-left: 30px;
+  margin-top: 5px;
+  width: 120px;
+  height: 45px;
+  justify-content: center;
+}
+
+#load-next :hover {
+  transform: scale(1.5);
+}
+
+#load-next h2 {
+  margin-top: 6px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.center {
+  margin-top: 25px;
+}
+
+.form {
+  position: relative;
+  margin-left: 5em;
+
+}
+
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-family: alegreya;
+  font-size: 24px;
+}
+
+input[type=text] {
+  background-color: #f1f1f1;
+  width: 100%;
+}
+
+input[type=submit] {
+  background-color: #4056a1;
+
+  margin-left: 20px;
+  color: #fff;
+}
+
+.autocomplete-items {
+  position: absolute;
+  font-family: alegreya;
+  font-size: 24px;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #ddedf4;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.autocomplete-items div:hover {
+  background-color: #e9e9e9;
+}
+
+.autocomplete-active {
+  background-color: #4056a1;
+  color: #ffffff;
+}

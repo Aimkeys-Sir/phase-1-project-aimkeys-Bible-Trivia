@@ -10,32 +10,64 @@
 </head>
 
 <body>
-    <div class="logo-div">
-        <img class="logo" src="./logo.png">
-    </div>  
+
+    <div class="circle">
+        <h1 id="count-down">60</h1>
+    </div>
+    <div class="scores">
+        <div class="centered">
+            <h1 id="scores">Score: 0</h1>
+        </div>
+    </div>
+    <div class="hey">
+    </div>
     <div class="count">
-        <h1 id="countdown">30</h1>
-        <h2 id="scores">0 points</h2>
-        <!-- countdown and scores -->
+        <div class="title">
+            <img src="./images/title.png">
+        </div>
+
     </div>
-    <div>
-        <h2 id="answer"></h2>
+    <div id="load-next">
+        <h2>Next</h2>
     </div>
-    <div class="verses" >
-        <table id="clues">
-        <!-- clues -->
-    </table>
+    <div class="center">
+        <div class="form">
+            <form autocomplete="off">
+                <div class="autocomplete" style="width: 300px;">
+                    <input type="text" id="verse-field" name="verse-field" placeholder="book:chapter:verse" autofocus>
+                </div>
+
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <div class="verses">
+            <table id="clues">
+                <!-- clues -->
+            </table>
+
+        </div>
+        <div class="answers">
+            <table class="answers-table">
+                <tr class="tr1">
+                    <td id="book"></td>
+                    <td id="chap"></td>
+                    <td id="ver"></td>
+                </tr>
+
+                <tr class="tr2">
+                    <td id="answer1"></td>
+                    <td id="answer2"></td>
+                    <td id="answer3"></td>
+                </tr>
+            </table>
+
+
+        </div>
+
     </div>
-    
-    <div class="form">
-        <form autocomplete="off">
-            <div class="autocomplete" style="width: 300px;">
-                 <input type="text" id="verse-field" placeholder="book:chapter:verse">
-            </div>
-           
-            <input type="submit" value="Submit">
-        </form>
-    </div>
+
+
+
     <script type="text/javascript" src="./scripts/index.js"></script>
 </body>
 
