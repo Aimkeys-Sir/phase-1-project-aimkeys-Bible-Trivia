@@ -181,7 +181,6 @@ function displayVerse(verse) {
 		arrayOfTrs[j].append(h2)
 	})
 	return timeId
-
 }
 function createTrs(wordLength) {
 	main.innerHTML = ""
