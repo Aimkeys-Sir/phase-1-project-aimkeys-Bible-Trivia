@@ -37,7 +37,7 @@ const options = {
 ```
 ### Other declarations
 The colors array helps us to give the verse we display random colors.It's kind of cool.
-The chapters array helps us to create and object the has all the Books of the Bible as keys and the
+The chapters array helps us to create an object that has all the Books of the Bible as keys and the
 number of chapters as the values. This object allows us to know the reach of the chapters per book so
 that we can get a random chapter.
 
