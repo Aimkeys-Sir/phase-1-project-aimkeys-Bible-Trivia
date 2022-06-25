@@ -2,7 +2,7 @@
 It's time for us to remind ourselves some Bible verses! You like that?
 Bible Trivia is an app that displays a random verse from any book in the Bible
 and allows you to guess the verse. See what score you can get to!!
-![(https://postimg.cc/PPXrRxGr](https://github.com/Aimkeys-Sir/phase-1-project-aimkeys-Bible-Trivia/blob/final/images/screenshot1.png)
+![image](https://github.com/Aimkeys-Sir/phase-1-project-aimkeys-Bible-Trivia/blob/final/images/screenshot2.png?raw=true)
 
 ## Features
 The app contains:
